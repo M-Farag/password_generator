@@ -2,7 +2,7 @@ use rand::{thread_rng, seq::SliceRandom};
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
-#[structopt(name="Password generator",about="My password generator")]
+#[structopt(name="Password generator CLI application",about="A CLI application that allows you to generate different passwords")]
 struct Arguments {
     #[structopt(long="length", short="l", default_value="8")]
     length:usize
