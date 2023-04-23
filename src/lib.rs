@@ -7,7 +7,16 @@ use structopt::StructOpt;
 #[structopt(name="Password generator CLI app",about="A password generator CLI application")]
 struct Arguments {
     #[structopt(long="length", short="l", default_value="8")]
-    length:usize
+    length:usize,
+
+    #[structopt(long="uppercase", short="u")]
+    use_uppercase:bool,
+
+    #[structopt(long="numbers", short="n")]
+    use_numbers:bool,
+
+    #[structopt(long="special", short="s")]
+    use_special:bool,
 }
 
 impl Arguments {
@@ -36,7 +45,20 @@ impl Password {
     pub fn new() -> Result<Self,Box<dyn Error>>
     {
         let args = Arguments::new()?;
-        let chars_pool:Vec<char> = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect();
+        let mut chars_pool:Vec<char> = "abcdefghijklmnopqrstuvwxy".chars().collect();
+        
+        if args.use_numbers {
+            chars_pool.extend("0123456789".chars());
+        }
+
+        if args.use_uppercase {
+            chars_pool.extend("ABCDEFGHIJKLMNOPQRSTUVWXY".chars());
+        }
+
+        if args.use_special {
+            chars_pool.extend("!@#$%^&*()_+-=".chars());
+        }
+
         let as_text:String = (0..args.length).map(
             |_| {
                 *chars_pool.choose(&mut thread_rng()).unwrap()
