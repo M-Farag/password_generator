@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use rand::{seq::SliceRandom, thread_rng};
 use structopt::StructOpt;
 
@@ -11,9 +13,14 @@ struct Arguments {
 }
 
 impl Arguments {
-     fn new() -> Self
+     fn new() -> Result<Self,Box<dyn Error>>
     {
-         Arguments::from_args()
+         let args = Arguments::from_args();
+            if args.length > 35 {
+               return  Err("Password length must be at least 8 characters long".into());
+            }
+
+            Ok(args)
     }
 }
 
@@ -24,9 +31,9 @@ pub struct Password {
 }
 
 impl Password {
-    pub fn new() -> Self
+    pub fn new() -> Result<Self,Box<dyn Error>>
     {
-        let args = Arguments::new();
+        let args = Arguments::new()?;
         let chars_pool:Vec<char> = CHARS_POOL.chars().collect();
         let as_text:String = (0..args.length).map(
             |_| {
@@ -34,7 +41,7 @@ impl Password {
             }
         ).collect();
         
-        Self { as_text, length: args.length }
+        Ok(Self { as_text, length: args.length })
 
     }
 }
