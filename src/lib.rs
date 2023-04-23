@@ -3,8 +3,6 @@ use std::error::Error;
 use rand::{seq::SliceRandom, thread_rng};
 use structopt::StructOpt;
 
-const CHARS_POOL:&str = "abcdefg";
-
 #[derive(Debug, StructOpt)]
 #[structopt(name="Password generator CLI app",about="A password generator CLI application")]
 struct Arguments {
@@ -34,7 +32,7 @@ impl Password {
     pub fn new() -> Result<Self,Box<dyn Error>>
     {
         let args = Arguments::new()?;
-        let chars_pool:Vec<char> = CHARS_POOL.chars().collect();
+        let chars_pool:Vec<char> = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().collect();
         let as_text:String = (0..args.length).map(
             |_| {
                 *chars_pool.choose(&mut thread_rng()).unwrap()
