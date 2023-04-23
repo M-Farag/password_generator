@@ -15,7 +15,11 @@ impl Arguments {
     {
          let args = Arguments::from_args();
             if args.length > 35 {
-               return  Err("Password length must be at least 8 characters long".into());
+               return  Err("Password length must be at least 35 characters long".into());
+            }
+
+            if args.length < 3 {
+                return Err("Password length must be at least 3 characters long".into());
             }
 
             Ok(args)
