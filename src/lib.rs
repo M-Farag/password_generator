@@ -17,6 +17,9 @@ struct Arguments {
 
     #[structopt(long="special", short="s")]
     use_special:bool,
+
+    #[structopt(long="lowercase", short="w")]
+    use_lowercase:bool
 }
 
 impl Arguments {
@@ -45,8 +48,12 @@ impl Password {
     pub fn new() -> Result<Self,Box<dyn Error>>
     {
         let args = Arguments::new()?;
-        let mut chars_pool:Vec<char> = "abcdefghijklmnopqrstuvwxy".chars().collect();
+        let mut chars_pool:Vec<char> = Vec::new();
         
+        if args.use_lowercase {
+            chars_pool.extend("abcdefghijklmnopqrstuvwxy".chars());
+        }
+
         if args.use_numbers {
             chars_pool.extend("0123456789".chars());
         }
@@ -57,6 +64,10 @@ impl Password {
 
         if args.use_special {
             chars_pool.extend("!@#$%^&*()_+-=".chars());
+        }
+
+        if chars_pool.is_empty() {
+            return Err("You must select at least one password type".into());
         }
 
         let as_text:String = (0..args.length).map(
