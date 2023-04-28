@@ -12,3 +12,10 @@ A simple password generator that generates a password based on the user's input.
     - `-s` or `--special` to include special characters.
     - `-h` or `--help` to display the help message.
 - The password will be displayed on the screen.
+
+
+### Example
+```bash
+password_generator -l 20 -u -w -n -s
+```
+This will generate a password with a length of 20 characters and will include uppercase letters, lowercase letters, numbers, and special characters.
